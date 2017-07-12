@@ -39,4 +39,4 @@ const server = http.createServer(app);
 /**
  * Listen on provided port, on all network interfaces.
  */
-server.listen(port, () => console.log(`Watson Orchestrator running on localhost:${port}`));
+server.listen(port, () => console.log(`Maio POC running on localhost:${port}`));

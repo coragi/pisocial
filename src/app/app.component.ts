@@ -20,6 +20,8 @@ export class AppComponent implements AfterViewChecked {
 
   constructor(private watsonService: WatsonService) {
     this.mensagens = [];
+    let x = new Mensagem('', '<h3><span class="label label-primary">Entre com o nome da sua empresa para que eu avalie o nível de digitalidade!</span><h3>');
+    this.mensagens.push(x);
   }
   //apos cada atualizacao da view, manda o scroll pra ultima msg
   ngAfterViewChecked() {
@@ -43,59 +45,28 @@ export class AppComponent implements AfterViewChecked {
     //limpa o campo de mensagem
     msg_usuario.value = '';
 
-
-
-    //envia mensagem para o Conversation
-    /*
-    this.watsonService.msgParaWatson(m.msg_usuario)
+    this.watsonService.analiseNLU(m.msg_usuario)
       .subscribe(
-      (result: any) => {
-        console.log("result", result);
+      (result_nlu: any) => {
+        console.log('nlu response:', result_nlu);
+        let sentimento: string = 'Não encontrei!';
+        let score_digital: number = 0;
+        let palavra_chave: string = '';
 
-        let retorno = result.output.text[0];
-        if (retorno == 'pesquisar_discovery') {
-          let term = result.input.text;
-          //pesquisa no Discovery
-
-          //enriquece no NLU
-          // passa o texto para o NLU
-
-         //montar a query para o Discovery com o resultado do NLU
-         // term = "query=enriched_text.entities" + nlu_json.entities[0]; 
-          this.watsonService.pesquisaDiscovery(term)
-            .subscribe(
-            (result_discovery: any) => {
-              console.log("discovery", result_discovery);
-              let num_resultados = result_discovery.matching_results;
-              m.msg_watson = '<h3><span class="label label-primary">Pesquisei na minha base de conhecimento e encontrei <b>'
-                + num_resultados + '</b> resultado(s). O mais relevante é:</h3></span><br>' + result_discovery.passages[0].passage_text;
-              //result_discovery.passages[0].passage_text
+        if (result_nlu) {
+          if (result_nlu.sentiment) {
+            if (Number(result_nlu.sentiment.document.score) > 0) {
+              sentimento = 'Positivo ' + Math.round(Number(result_nlu.sentiment.document.score) * 100) + '%';
+            } else {
+              sentimento = 'Negativo ' + Math.round(Number(result_nlu.sentiment.document.score) * 100) + '%';
             }
-            );
-
-        } else {
-          m.msg_watson = '<h3><span class="label label-primary">' + result.output.text[0] + '</span></h3>';
-          if (result.intents.length > 0) {
-            m.intencao = '#' + result.intents[0].intent;
-            m.confianca = result.intents[0].confidence;
+            score_digital = Math.round((Number(result_nlu.sentiment.targets[0].score) + 1) * 50);
           }
+          palavra_chave = result_nlu.keywords[0].text;
         }
+        m.msg_watson = '<b>Sentimento:</b> ' + sentimento + '<br><br><b>Palavra-chave: </b>'
+          + palavra_chave + '<br><br><b>Nível de Digitalidade: </b>' + score_digital;
       }
       );
- 
-
-*/
-
-    //quando for apenas DISCOVERY, o chat é apenas um campo de pesquisa na base
-    //assim, o usuario deve colocar a query completa se for usar enriched_text por exemplo
-    if (environment.discovery_flag && !environment.nlu_flag && !environment.conversation_flag) {
-      this.watsonService.pesquisaDiscovery(m.msg_usuario)
-        .subscribe(
-        (result_discovery: any) => {
-          m.msg_watson = 'Resultados: ' + result_discovery.matching_results + '<br><br><b>Texto do resultado mais relevante:</b><br>'
-            + result_discovery.results[0].text;
-        }
-        );
-    }
   }
 }
