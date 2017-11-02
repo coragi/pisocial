@@ -1,12 +1,54 @@
-<div *ngIf="mensagem.msg_usuario" class="text-left">
-  <h2>
-    <!-- CRIAR UMA CLASSE AO INVES DE USAR LABEL, JA Q LABEL NAO QUEBRA A LINHA-->
-    <span class="label label-success">{{ mensagem.msg_usuario }}</span>
-  </h2>
-</div>
-<div *ngIf="mensagem.msg_watson" class="text-right">
-  <!-- recurso para links funcionarem -->
-  <div innerHTML = "{{ mensagem.msg_watson }}"></div>    
-  <span>{{ mensagem.intencao }} <span class="label label-danger">{{ mensagem.confianca | number : '1.2-2'}}</span>
-  </span>
+<br/>
+<br/>
+<div class="formulario section section-primary">
+  <div class="container">
+    <div class="row vertical-align">
+      <div class="col-xs-2">
+        <img src="assets/ibm.png" class="img-responsive" alt="Responsive image">
+      </div>
+      <div class="col-xs-8">
+        <h1 class="text-center text-info">Personality Insights Social</h1>
+      </div>
+      <div class="col-xs-2">
+        <img src="assets/watson.png" class="img-responsive" alt="Responsive image">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <form *ngIf="clicked">
+          <div class="form-group">
+            <label>Entre com o usuário do Twitter:</label>
+            <input type="text" class="form-control input-lg" placeholder="@" #msg_usuario>
+          </div>
+          <div class="form-group text-center">
+            <button class="btn btn-lg btn-info" (click)="enviaMensagem(msg_usuario)">Enviar
+            </button>
+          </div>
+        </form>
+        <div *ngIf="!clicked" class="text-center">
+          Seus dados foram enviados. Obrigado por participar!
+          <br/>Veja abaixo qual o perfil que o Watson gerou baseado na conta de Twitter informada.
+          <div class="row">
+            <div class="col-md-offset-2 col-md-4 text-left">
+              <h3 class="text-primary">Abertura: {{abertura}}%</h3>
+              <h3 class="text-primary">Escrupulosidade: {{escrupulosidade}}%</h3>
+              <h3 class="text-primary">Extroversão: {{extroversao}}%</h3>
+              <h3 class="text-primary">Amabilidade: {{amabilidade}}%</h3>
+              <h3 class="text-primary">Faixa Emocional: {{faixa_emocional}}%</h3>
+            </div>
+            <div class="col-md-4 text-right">
+              <h3 class="text-success">Desafio: {{n_desafio}}%</h3>
+              <h3 class="text-success">Curiosidade: {{n_curiosidade}}%</h3>
+              <h3 class="text-warning">Mudanças: {{v_mudancas}}%</h3>
+              <h3 class="text-warning">Auto Crescimento: {{v_autocrescimento}}%</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      Desenvolvido por Danilo de Novais Silveira - IBM
+      <br/><a href="mailto:dnovais@br.ibm.com">dnovais@br.ibm.com</a>
+    </div>
+  </div>
 </div>

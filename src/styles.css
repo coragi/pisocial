@@ -7,3 +7,8 @@
 .formulario {
   height: 25vh;
 }
+
+.vertical-align {
+  display: flex;
+  align-items: center;
+}

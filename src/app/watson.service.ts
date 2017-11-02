@@ -10,18 +10,20 @@ export class WatsonService {
   // URL das APIs - eh definida em environment.ts
   private URL_server: string = environment.apiURL;
 
-  // variavel que armazena o contexto de uma conversa
-  private context: Object;
+  constructor(private http: Http) { }
 
-  constructor(private http: Http) {
-    this.context = {}; // inicializa o contexto
-  }
-
-  analiseNLU(texto: string) {
-
-    return this.http.get(this.URL_server + '/api/empresa/' + texto)
+  profilePI(texto: string) {
+    return this.http.get(this.URL_server + '/api/usuario/' + texto)
       .map(res => res.json());
-
   }
-    
+
+  updateDashboard() {
+    return this.http.get(this.URL_server + '/api/dashboard')
+      .map(res => res.json());
+  }
+
+  resetDashboard() {
+    return this.http.get(this.URL_server + '/api/reset')
+      .map(res => res.json());
+  }
 }

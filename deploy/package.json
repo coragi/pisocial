@@ -10,8 +10,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "dist": "ng build --prod",
-    "push": "npm run dist && cp -r dist server deploy && cd deploy && cf push"
+    "dist": "ng build --prod && cp src/static/manifest.yml src/static/Staticfile dist",
+    "push": "npm run dist && cd dist && cf push"
   },
   "private": true,
   "dependencies": {
