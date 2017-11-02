@@ -67,8 +67,8 @@ router.get('/usuario/:texto', (req, res) => {
 
     const PersonalityInsightsV3 = require('watson-developer-cloud/personality-insights/v3');
     const personalityInsights = new PersonalityInsightsV3({
-      username: '010aef55-de37-47fe-95b2-404176fb35b2',
-      password: 'ABkR6MBjEeen',
+      username: '',
+      password: '',
       version_date: '2016-10-19',
     });
 
